@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/styles/globals.css" />
+        <link rel="stylesheet" href="/styles/header.css" />
+        <link rel="stylesheet" href="/styles/toolHero.css" />
+        <link rel="stylesheet" href="/styles/filters.css" />
+        <link rel="stylesheet" href="/styles/pokemonList.css" />
+        <link rel="favicon" href="favicon.ico" />
+        <title>Developer Challenge</title>
+    </head>
+    <body>
+        <!-- Header -->
+        <header class="layout ds-flex header">
+            <a href="/">
+                <img class="logo" src="/favicon.ico" />
+            </a>
+            <h2 class="logo-title">Developer Challenge</h2>
+        </header>
+
+        <!-- Tool hero -->
+        <div class="layout ds-flex tool-hero mrg-bottom">
+            <h1 class="tool-title">Tool #1: Filter</h1>
+            <p class="tool-description">
+                For this specific tool I've created my own pokedex.json file, and fecthed from it a list of Pokémons, in
+                which you can test the tool and filter by your favourite Pokémons!
+            </p>
+        </div>
+
+        <!-- Filters -->
+        <form class="layout ds-flex filter-container mrg-bottom">
+            <div class="search-bar mrg-bottom">
+                <input type="text" placeholder="Search any Pokémon" class="search" />
+                <button class="search-btn">
+                    <img src="/search.png" class="search-logo" />
+                </button>
+            </div>
+            <div class="ds-flex attributes-filter-container">
+                <div>
+                    <b>HP:</b>
+                    <input type="number" placeholder="Minimum" />
+                    <input type="number" placeholder="Maximum" />
+                </div>
+                <div>
+                    <b>Attack:</b>
+                    <input type="number" placeholder="Minimum" />
+                    <input type="number" placeholder="Maximum" />
+                </div>
+                <div>
+                    <b>Defense:</b>
+                    <input type="number" placeholder="Minimum" />
+                    <input type="number" placeholder="Maximum" />
+                </div>
+                <div>
+                    <b>Sp. Attack:</b>
+                    <input type="number" placeholder="Minimum" />
+                    <input type="number" placeholder="Maximum" />
+                </div>
+                <div>
+                    <b>Sp. Defense:</b>
+                    <input type="number" placeholder="Minimum" />
+                    <input type="number" placeholder="Maximum" />
+                </div>
+                <div>
+                    <b>Speed:</b>
+                    <input type="number" placeholder="Minimum" />
+                    <input type="number" placeholder="Maximum" />
+                </div>
+            </div>
+        </form>
+
+        <!-- Pokémons list -->
+        <div id="poke-cards-container" class="layout ds-flex mrg-bottom"></div>
+
+        <script src="filter-tool.js"></script>
+    </body>
+</html>
