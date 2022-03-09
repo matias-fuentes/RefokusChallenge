@@ -2,7 +2,7 @@ const pokemonList = document.querySelector('#poke-cards-container');
 
 async function filterTool() {
     /* Credits to fanzeyi and its contributors for the data of the /pokedex.json.
-        More info about them and its repository at: https://github.com/fanzeyi/pokemon.json */
+    More info about them and its repository at: https://github.com/fanzeyi/pokemon.json */
     let fullPokemonList = await fetch('/pokedex.json');
     fullPokemonList = await fullPokemonList.json();
     getInitialPage(fullPokemonList);
@@ -10,7 +10,7 @@ async function filterTool() {
     const filterForm = document.querySelector('.filter-container');
     filterForm.addEventListener('submit', function (event) {
         /* We prevent the form its default behavior of sending a POST method, so we can handle all
-            with JavaScript at the client side. */
+        with JavaScript at the client side. */
         event.preventDefault();
 
         /* We select all the inputs from filterForm, and remove (splice) only the search button. */
@@ -62,13 +62,13 @@ async function filterTool() {
 
         /* We iterate through all the inputs and insert them to the filters object.
             
-            filterValues: array of all the inputs (inputs, not values) from filterForm.
-            filter: an individual input from filterValues.
-            filters: object (from above) with the values of those individual inputs.
-            filtersObjKey: stores the key name of the type of filter (HP, attack, defense, etc.) needed in
-            order to assign properly the value extracted from filter.value to the filters object.
-            
-            With all of this, we already have our filters object from above already populated :). */
+        filterValues: array of all the inputs (inputs, not values) from filterForm.
+        filter: an individual input from filterValues.
+        filters: object (from above) with the values of those individual inputs.
+        filtersObjKey: stores the key name of the type of filter (HP, attack, defense, etc.) needed in
+        order to assign properly the value extracted from filter.value to the filters object.
+        
+        With all of this, we already have our filters object from above already populated :). */
         filterValues.forEach((filter, index) => {
             if (index === 0) {
                 filters.search = filter.value;
@@ -83,23 +83,25 @@ async function filterTool() {
         });
 
         /* 1) We check if we have a minimum filter, or a maximum filter, because if not, then we don't have
-            anything to filter.
-            2) We extract the key value of the stat that we are currently iterating for in the filters object
-            (HP, attack, defense, etc.), so later we can use it as a reference.
-            3)
-                A) Check if we have a minimum stat, and not a maximum stat, and filter. This is useful if
-                the user wants to see all the Pokémons with, for example, at least 80 HP with no limits.
-                B) Check if we have a maximum stat, and not a minimum stat, and filter. This is useful if
-                the user wants to see all the Pokémons with, for example, maximum 48 Sp. Attack, with no
-                minimums. From Pokémons with 48 Sp. Attack, til' Pokémons with 0 Sp. Attack.
-                C) Check if we have both stats, and filter between those two ranges.
-            4) We always check if filteredPokemons have length, because if it has, it means that we've already
-            filtered before in an earlier iteration from the fullPokemonList, and, as the name itself explains it,
-            in filteredPokemons we want to store the Pokémons that we will be filtering. */
+        anything to filter.
+        2) We extract the key value of the stat that we are currently iterating for in the filters object
+        (HP, attack, defense, etc.), so later we can use it as a reference.
+        3)
+            A) Check if we have a minimum stat, and not a maximum stat, and filter. This is useful if
+            the user wants to see all the Pokémons with, for example, at least 80 HP with no limits.
+            B) Check if we have a maximum stat, and not a minimum stat, and filter. This is useful if
+            the user wants to see all the Pokémons with, for example, maximum 48 Sp. Attack, with no
+            minimums. From Pokémons with 48 Sp. Attack, til' Pokémons with 0 Sp. Attack.
+            C) Check if we have both stats, and filter between those two ranges.
+        4) We always check if filteredPokemons have length, because if it has, it means that we've already
+        filtered before in an earlier iteration from the fullPokemonList, and, as the name itself explains it,
+        in filteredPokemons we want to store the Pokémons that we will be filtering. */
 
+        let filterStatsExists = false;
         let filteredPokemons = [];
         filters.stats.forEach(stat => {
             if (stat.maximum || stat.minimum) {
+                filterStatsExists = true;
                 const key = Object.keys(stat)[0];
                 if (stat.minimum && !stat.maximum) {
                     if (filteredPokemons.length) {
@@ -128,51 +130,51 @@ async function filterTool() {
         });
 
         /* Elements with which we are going to work */
-        const pokeCards = document.querySelectorAll('.card');
-        const emptyStateContainer = document.querySelector('.empty-state-container');
+        let pokeCards = document.querySelectorAll('.card');
+        let emptyStateContainer = document.querySelector('.empty-state-container');
 
         /* After we filter by the stats, then we filter between those same Pokémons that are already filtered
-            (by stats), by search. */
+        (by stats), by search. */
         if (filters.search) {
             removePrevState(emptyStateContainer, pokeCards);
             /* With the combination of removePrevState(), createPokeCards(), and getInitialPage() we can remove
-                the older Pokémons, and replace them by creating the new ones based on the filters of the user.
-    
-                If the amount of filtered Pokémons is lesser or equal to 25, then we don't have to worry about
-                to split all the Pokémons in different pages, so we just create them.
-                Otherwise, with getInitialPage() we receive the first 25 Pokémons of the first (pageNumber) page,
-                and creates and displays them, all of them splitted in the different pages. */
+            the older Pokémons, and replace them by creating the new ones based on the filters of the user.
+
+            If the amount of filtered Pokémons is lesser or equal to 25, then we don't have to worry about
+            to split all the Pokémons in different pages, so we just create them.
+            Otherwise, with getInitialPage() we receive the first 25 Pokémons of the first page,
+            and creates and displays them, all of them splitted in the different pages. */
             if (filteredPokemons.length) {
                 filteredPokemons = filteredPokemons.filter(
                     pokemon => pokemon.name.english.indexOf(filters.search) !== -1
                 );
             } else {
-                filteredPokemons = fullPokemonList.filter(
-                    pokemon => pokemon.name.english.indexOf(filters.search) !== -1
-                );
-                if (!filteredPokemons.length) {
+                if (filterStatsExists) {
                     emptyState();
+                } else {
+                    filteredPokemons = fullPokemonList.filter(
+                        pokemon => pokemon.name.english.indexOf(filters.search) !== -1
+                    );
                 }
             }
-        } else if (filteredPokemons) {
-            let filterStatsExists = false;
-            filters.stats.forEach(stat => {
-                if (stat.maximum || stat.minimum) {
-                    removePrevState(emptyStateContainer, pokeCards);
-                    filterStatsExists = true;
-                    return;
-                }
-            });
 
+            if (!filteredPokemons.length) {
+                pokeCards = document.querySelectorAll('.card');
+                emptyStateContainer = document.querySelector('.empty-state-container');
+
+                removePrevState(emptyStateContainer, pokeCards);
+                emptyState();
+            }
+        } else if (filteredPokemons) {
             if (filterStatsExists === false) {
                 /* If there is no search, if there are already filtered Pokémons displayed, and if there are no
-                    filter stats, we reset the filters.
-                    
-                    This is useful for example if the user types: 'Char', and then removes it.
-        
-                    When types 'Char': shows all Pokémons with 'Char' in their names.
-                    When types '' AFTER (and only after) types 'Char', with no other filters: removes the Char Pokémons
-                    and reset the filters. */
+                filter stats, we reset the filters.
+                
+                This is useful for example if the user types: 'Char', and then removes it.
+    
+                When types 'Char': shows all Pokémons with 'Char' in their names.
+                When types '' AFTER (and only after) types 'Char', with no other filters: removes the Char Pokémons
+                and reset the filters. */
 
                 removePrevState(emptyStateContainer, pokeCards);
                 getInitialPage(fullPokemonList);
@@ -189,8 +191,7 @@ async function filterTool() {
 
 filterTool();
 
-/* This function returns the Pokémons of the page. */
-function getPagePokes(pokemonList, pageNumber) {
+function getInitialPage(pokemonList) {
     let actualPagePokes = [];
 
     /* We only push the first 25 selected Pokémons from the pokemonList to the actualPagePokes. */
@@ -215,7 +216,9 @@ function getPagePokes(pokemonList, pageNumber) {
         }
     }
 
-    return actualPagePokes;
+    createPokeCards(actualPagePokes);
+
+    return;
 }
 
 function createPokeCards(actualPagePokes) {
@@ -241,13 +244,6 @@ function createPokeCards(actualPagePokes) {
         pokemonCard.innerHTML = innerHTML;
         pokemonList.appendChild(pokemonCard);
     });
-
-    return;
-}
-
-function getInitialPage(pokemonList) {
-    actualPagePokes = getPagePokes(pokemonList, 1);
-    createPokeCards(actualPagePokes);
 
     return;
 }
