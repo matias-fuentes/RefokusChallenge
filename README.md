@@ -6,8 +6,4 @@ VIDEO PRESENTATION: https://www.youtube.com/watch?v=iTsKAstZsGg
 
 ## Description
 
-For this challenge, I created two tools: a filter tool, and a filler tool.
-
-With the filter tool, you'll be able to search and filter by your favourite Pokémons (yes, those lovely creatures of your childhood). Search for ANY (and when I mean ANY, I mean ANY) Pokémon that you want, and filter by its stats, combining them in any crazy order that you can imagine!
-
-And with the filler tool, you can quote practically any company stock that you want! And of course, get all the details about it.
+the Filter Tool and the Filler Tool. With the Filter Tool, you can navigate through an extensive Pokédex, filtering and sorting Pokémon based on various criteria. The Filler Tool allows you to quote any company stock, providing valuable insights and information to aid your investment decisions.
