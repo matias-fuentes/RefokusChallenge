@@ -1,6 +1,10 @@
 # [Refokus Challenge](https://refokuschallenge.vercel.app/)
 
-Video Presentation: https://www.youtube.com/watch?v=iTsKAstZsGg
+WEBPAGE: https://refokuschallenge.vercel.app
+
+VIDEO PRESENTATION: https://www.youtube.com/watch?v=iTsKAstZsGg
+
+## Description
 
 For this challenge, I created two tools: a filter tool, and a filler tool.
 
